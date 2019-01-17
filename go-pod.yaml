@@ -5,6 +5,6 @@ metadata:
 spec:
   containers:
     - name: golang-pod
-      image: bitnami/apache:latest
+      image: barniemakonda/nginx-with-curl:latest
       ports:
         - containerPort: 80
