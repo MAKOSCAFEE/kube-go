@@ -4,7 +4,7 @@ metadata:
   name: golang-pod
 spec:
   containers:
-    - name: go-js-pod
+    - name: golang-pod
       image: bitnami/apache:latest
       ports:
         - containerPort: 80
