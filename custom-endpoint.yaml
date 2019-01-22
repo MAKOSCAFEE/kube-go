@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: custom-service
+subsets:
+  - addresses:
+      # this should be an ip that will be the entry point
+      # my case i used node-labels.yaml public IP
+      - ip: x.x.x.x
+    ports:
+      - name: http
+        port: 80
+        protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
