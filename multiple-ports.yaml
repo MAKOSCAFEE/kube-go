@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: multi-port
+  labels:
+    name: multi-port
+spec:
+  replicas: 3
+  selector:
+    name: multi-port
+  template:
+    metadata:
+      labels:
+        name: multi-port
+    spec:
+      containers:
+        - name: golang-pod
+          image: jonbaier/node-express-multi:latest
+          ports:
+            - containerPort: 80
+            - containerPort: 8888
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-port
+  labels:
+    name: multi-port
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+    - name: admin-access
+      protocol: TCP
+      port: 8888
+  selector:
+    name: multi-port
