@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: staging
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: utility
+  namespace: staging
+spec:
+  containers:
+    - name: utility
+      image: barniemakonda/nginx-with-curl:latest
+      ports:
+        - containerPort: 80
