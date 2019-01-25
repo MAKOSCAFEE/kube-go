@@ -5,16 +5,16 @@ metadata:
   labels:
     name: replica-sample
 spec:
-  replica: 1
+  replicas: 1
   selector:
-    name:  replica-sample
+    name: replica-sample
   template:
     metadata:
       labels:
         name: replica-sample
-      spec:
-        containers:
-          - name: replica-sample
+    spec:
+      containers:
+        - name: replica-sample
           image: barniemakonda/nginx-with-curl:latest
           ports:
             - containerPort: 80
