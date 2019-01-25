@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: replica-sample
+  labels:
+    name: replica-sample
+spec:
+  replica: 1
+  selector:
+    name:  replica-sample
+  template:
+    metadata:
+      labels:
+        name: replica-sample
+      spec:
+        containers:
+          - name: replica-sample
+          image: barniemakonda/nginx-with-curl:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: replica-sample
+  labels:
+    name: replica-sample
+spec:
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  ports:
+    - port: 80
+  selector:
+    name: replica-sample
