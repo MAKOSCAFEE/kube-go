@@ -22,6 +22,7 @@ type apiMessageResponse struct {
 type product struct {
 	Name     string `json:"name"`
 	ID       int    `json:"id,string"`
+	Price    int    `json:"price,string"`
 	Category string `json:"category"`
 }
 
@@ -29,10 +30,23 @@ func main() {
 	port := 8080
 
 	http.HandleFunc("/api/v1", handleSimpleWeb)
+	http.HandleFunc("/api/v1/products", handleProducts)
 
 	log.Printf("Server starting on port %v\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
 
+}
+
+func handleProducts(w http.ResponseWriter, r *http.Request) {
+	response := product{Name: "Sugar", Price: 2300, ID: 3423, Category: "Food"}
+
+	data, err := json.Marshal(response)
+
+	if err != nil {
+		panic("Ooops, There is problem here")
+	}
+
+	fmt.Fprint(w, string(data))
 }
 
 func handleSimpleWeb(w http.ResponseWriter, r *http.Request) {
