@@ -40,23 +40,15 @@ func main() {
 func handleProducts(w http.ResponseWriter, r *http.Request) {
 	response := product{Name: "Sugar", Price: 2300, ID: 3423, Category: "Food"}
 
-	data, err := json.Marshal(response)
+	encoder := json.NewEncoder(w)
 
-	if err != nil {
-		panic("Ooops, There is problem here")
-	}
-
-	fmt.Fprint(w, string(data))
+	encoder.Encode(&response)
 }
 
 func handleSimpleWeb(w http.ResponseWriter, r *http.Request) {
 	response := apiMessageResponse{Message: "Success", Status: 200}
 
-	data, err := json.Marshal(response)
+	encoder := json.NewEncoder(w)
 
-	if err != nil {
-		panic("Ooops, There is problem here")
-	}
-
-	fmt.Fprint(w, string(data))
+	encoder.Encode(&response)
 }
