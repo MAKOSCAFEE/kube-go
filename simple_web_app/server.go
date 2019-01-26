@@ -10,6 +10,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -26,11 +27,16 @@ type product struct {
 	Category string `json:"category"`
 }
 
+type simpleRequest struct {
+	Name string `json:"name"`
+}
+
 func main() {
 	port := 8080
 
 	http.HandleFunc("/api/v1", handleSimpleWeb)
 	http.HandleFunc("/api/v1/products", handleProducts)
+	http.HandleFunc("/api/v1/send", handlePostRequests)
 
 	log.Printf("Server starting on port %v\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
@@ -47,6 +53,32 @@ func handleProducts(w http.ResponseWriter, r *http.Request) {
 
 func handleSimpleWeb(w http.ResponseWriter, r *http.Request) {
 	response := apiMessageResponse{Message: "Success", Status: 200}
+
+	encoder := json.NewEncoder(w)
+
+	encoder.Encode(&response)
+}
+
+func handlePostRequests(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+
+		return
+	}
+
+	var request simpleRequest
+
+	err = json.Unmarshal(body, &request)
+
+	if err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+
+		return
+	}
+
+	response := apiMessageResponse{Message: "Hello " + request.Name, Status: 200}
 
 	encoder := json.NewEncoder(w)
 
